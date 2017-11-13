@@ -58,6 +58,7 @@ public class ResourceConfig extends ResourceServerConfigurerAdapter {
                 .csrf().disable()
                 .anonymous().disable()
                 .authorizeRequests()
+                .antMatchers("/name").access("hasAnyRole('USER')")
                 .antMatchers(HttpMethod.OPTIONS).permitAll()
                 // when restricting access to 'Roles' you must remove the "ROLE_" part role
                 // for "ROLE_USER" use only "USER"
@@ -76,7 +77,7 @@ public class ResourceConfig extends ResourceServerConfigurerAdapter {
             String path = request.getServletPath();
             if ( path.length() >= 5 ) {
                 path = path.substring(0, 5);
-                boolean isApi = path.equals("/api/");
+                boolean isApi = path.equals("/api/") || path.equals("/name");
                 return isApi;
             } else return false;
         }
